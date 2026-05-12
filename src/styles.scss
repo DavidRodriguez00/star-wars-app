@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
+html.intro-scroll-locked,
+body.intro-scroll-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+}

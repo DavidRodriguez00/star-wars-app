@@ -77,12 +77,20 @@ export class ScrollOrchestratorService implements OnDestroy {
 
     // Evitar duplicados
     this.killTimeline('scene-one');
+    let isAutoScrollingSceneOne = false;
+    const logoMaterials = this.collectObjectMaterials(logo);
+
+    logoMaterials.forEach((material) => {
+      material.transparent = true;
+      material.opacity = 1;
+      material.needsUpdate = true;
+    });
 
     const timeline = gsap.timeline({
 
       defaults: {
-        ease: this.DEFAULT_EASE,
-        duration: 1
+        ease: 'power3.inOut',
+        duration: 1.4
       },
 
       scrollTrigger: {
@@ -90,17 +98,33 @@ export class ScrollOrchestratorService implements OnDestroy {
 
         trigger: '#trigger-scene-one',
 
-        start: 'top top',
+        start: 'top+=1 top',
 
         end: 'bottom bottom',
 
-        scrub: this.DEFAULT_SCRUB,
+        toggleActions: 'play none none reverse',
 
         invalidateOnRefresh: true,
 
         fastScrollEnd: true,
 
-        anticipatePin: 1
+        anticipatePin: 1,
+
+        onEnter: (trigger) => {
+          if (isAutoScrollingSceneOne) return;
+
+          isAutoScrollingSceneOne = true;
+          timeline.play();
+
+          window.scrollTo({
+            top: trigger.end,
+            behavior: 'smooth'
+          });
+
+          window.setTimeout(() => {
+            isAutoScrollingSceneOne = false;
+          }, 900);
+        }
       }
     });
 
@@ -130,7 +154,13 @@ export class ScrollOrchestratorService implements OnDestroy {
       // Movimiento flotante
       .to(logo.position, {
         y: 25
-      }, 0);
+      }, 0)
+
+      // Desaparición del logo
+      .to(logoMaterials, {
+        opacity: 0,
+        duration: 1.1
+      }, 0.2);
 
     // Nebulosa opcional
     if (nebula) {
@@ -148,6 +178,26 @@ export class ScrollOrchestratorService implements OnDestroy {
     this.storeTimeline('scene-one', timeline);
 
     return timeline;
+  }
+
+  private collectObjectMaterials(object: THREE.Object3D): THREE.Material[] {
+
+    const materials = new Set<THREE.Material>();
+
+    object.traverse((child) => {
+
+      if (!(child instanceof THREE.Mesh)) return;
+
+      const meshMaterials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      meshMaterials.forEach((material) => {
+        if (material) materials.add(material);
+      });
+    });
+
+    return Array.from(materials);
   }
 
   // ======================================================
