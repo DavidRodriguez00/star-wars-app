@@ -3,6 +3,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./out-tsc/app",
     "types": []
   },
@@ -10,6 +11,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
+    "src/test-setup.ts",
     "src/**/*.spec.ts"
   ]
 }

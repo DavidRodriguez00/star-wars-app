@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MainCanvasComponent } from "./shared/components/main-canvas/main-canvas";
+import { SceneOneComponent } from "./features/scene-one/scene-one";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ MainCanvasComponent, SceneOneComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
