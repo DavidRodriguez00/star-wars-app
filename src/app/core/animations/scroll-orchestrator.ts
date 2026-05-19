@@ -77,7 +77,6 @@ export class ScrollOrchestratorService implements OnDestroy {
 
     // Evitar duplicados
     this.killTimeline('scene-one');
-    let isAutoScrollingSceneOne = false;
     const logoMaterials = this.collectObjectMaterials(logo);
 
     logoMaterials.forEach((material) => {
@@ -87,44 +86,18 @@ export class ScrollOrchestratorService implements OnDestroy {
     });
 
     const timeline = gsap.timeline({
-
       defaults: {
         ease: 'power3.inOut',
         duration: 1.4
       },
-
       scrollTrigger: {
         id: 'scene-one',
-
         trigger: '#trigger-scene-one',
-
         start: 'top+=1 top',
-
-        end: 'bottom bottom',
-
-        toggleActions: 'play none none reverse',
-
+        end: '55% top',
+        scrub: this.DEFAULT_SCRUB,
         invalidateOnRefresh: true,
-
-        fastScrollEnd: true,
-
-        anticipatePin: 1,
-
-        onEnter: (trigger) => {
-          if (isAutoScrollingSceneOne) return;
-
-          isAutoScrollingSceneOne = true;
-          timeline.play();
-
-          window.scrollTo({
-            top: trigger.end,
-            behavior: 'smooth'
-          });
-
-          window.setTimeout(() => {
-            isAutoScrollingSceneOne = false;
-          }, 900);
-        }
+        fastScrollEnd: true
       }
     });
 
@@ -144,11 +117,6 @@ export class ScrollOrchestratorService implements OnDestroy {
         x: 0.35,
         y: 0.35,
         z: 0.35
-      }, 0)
-
-      // Rotación sutil
-      .to(logo.rotation, {
-        y: Math.PI * 0.5
       }, 0)
 
       // Movimiento flotante
