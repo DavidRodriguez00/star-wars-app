@@ -109,7 +109,7 @@ export class ScrollOrchestratorService implements OnDestroy {
 
       // Cámara
       .to(camera.position, {
-        z: 400
+        z: 310
       }, 0)
 
       // Escala logo
@@ -403,6 +403,19 @@ export class ScrollOrchestratorService implements OnDestroy {
 
       }, at);
     }
+  }
+
+  // ======================================================
+  // Scroll Reset
+  // ======================================================
+
+  public resetScroll(): void {
+    // Scroll to top with a small delay to ensure page is ready
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      // Refresh after scrolling to ensure triggers are properly positioned
+      ScrollTrigger.refresh();
+    }, 100);
   }
 
   // ======================================================

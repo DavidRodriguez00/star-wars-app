@@ -16,11 +16,8 @@ export class EngineService implements OnDestroy {
   // ======================================================
 
   public scene: THREE.Scene;
-
   public camera: THREE.PerspectiveCamera;
-
   public renderer!: THREE.WebGLRenderer;
-
   public mouse: THREE.Vector2;
 
   // ======================================================
@@ -30,7 +27,6 @@ export class EngineService implements OnDestroy {
   private frameId: number | null = null;
 
   private isRunning = false;
-
   private isInitialized = false;
 
   // ======================================================
@@ -40,13 +36,9 @@ export class EngineService implements OnDestroy {
   private previousTime = performance.now();
 
   public elapsedTime = 0;
-
   public deltaTime = 0;
-
   public fps = 0;
-
   private fpsAccumulator = 0;
-
   private fpsFrames = 0;
 
   // ======================================================
@@ -54,15 +46,10 @@ export class EngineService implements OnDestroy {
   // ======================================================
 
   private readonly DEFAULT_FOV = 55;
-
   private readonly DEFAULT_NEAR = 0.1;
-
   private readonly DEFAULT_FAR = 5000;
-
   private readonly MAX_PIXEL_RATIO = 2;
-
   private readonly MAX_DELTA = 0.1;
-
   private readonly DEFAULT_CLEAR_COLOR = 0x000000;
 
   // ======================================================
@@ -97,7 +84,6 @@ export class EngineService implements OnDestroy {
   ) {
 
     this.scene = new THREE.Scene();
-
     this.mouse = new THREE.Vector2();
 
     // Cámara cinematográfica
@@ -132,13 +118,9 @@ export class EngineService implements OnDestroy {
     });
 
     this.configureRenderer();
-
     this.updateRendererSize();
-
     this.listenToEvents(canvas);
-
     this.startLoop();
-
     this.isInitialized = true;
   }
 
@@ -150,14 +132,10 @@ export class EngineService implements OnDestroy {
 
     this.renderer.outputColorSpace =
       THREE.SRGBColorSpace;
-
     this.renderer.toneMapping =
       THREE.ReinhardToneMapping;
-
     this.renderer.toneMappingExposure = 1;
-
     this.renderer.shadowMap.enabled = true;
-
     this.renderer.shadowMap.type =
       THREE.PCFSoftShadowMap;
 
@@ -182,17 +160,12 @@ export class EngineService implements OnDestroy {
     if (this.isRunning) return;
 
     this.isRunning = true;
-
     this.previousTime = performance.now();
-
     this.ngZone.runOutsideAngular(() => {
 
       const render = () => {
-
         if (!this.isRunning) return;
-
         const currentTime = performance.now();
-
         // Delta en segundos
         this.deltaTime = Math.min(
           (currentTime - this.previousTime) / 1000,
@@ -200,9 +173,7 @@ export class EngineService implements OnDestroy {
         );
 
         this.previousTime = currentTime;
-
         this.elapsedTime += this.deltaTime;
-
         this.calculateFPS();
 
         // Ejecutar callbacks
@@ -219,34 +190,25 @@ export class EngineService implements OnDestroy {
           this.scene,
           this.camera
         );
-
         this.frameId =
           requestAnimationFrame(render);
       };
-
       this.frameId =
         requestAnimationFrame(render);
     });
   }
 
   public stopLoop(): void {
-
     this.isRunning = false;
-
     if (this.frameId !== null) {
-
       cancelAnimationFrame(this.frameId);
-
       this.frameId = null;
     }
   }
 
   public resumeLoop(): void {
-
     if (this.isRunning) return;
-
     this.previousTime = performance.now();
-
     this.startLoop();
   }
 
@@ -286,7 +248,6 @@ export class EngineService implements OnDestroy {
   }
 
   public clearUpdateLoop(): void {
-
     this.updateCallbacks = [];
   }
 
@@ -297,14 +258,12 @@ export class EngineService implements OnDestroy {
   public add(
     ...objects: THREE.Object3D[]
   ): void {
-
     this.scene.add(...objects);
   }
 
   public remove(
     ...objects: THREE.Object3D[]
   ): void {
-
     this.scene.remove(...objects);
   }
 
@@ -344,7 +303,6 @@ export class EngineService implements OnDestroy {
   ): void {
 
     this.camera.fov = fov;
-
     this.camera.updateProjectionMatrix();
   }
 
@@ -355,7 +313,6 @@ export class EngineService implements OnDestroy {
   private updateRendererSize(): void {
 
     this.viewport.width = window.innerWidth;
-
     this.viewport.height = window.innerHeight;
 
     this.viewport.aspect =
@@ -419,12 +376,10 @@ export class EngineService implements OnDestroy {
 
         this.updateRendererSize();
       });
-
     this.resizeObserver.observe(canvas);
   }
 
   private handleResize = (): void => {
-
     this.updateRendererSize();
   };
 
@@ -459,13 +414,9 @@ export class EngineService implements OnDestroy {
   };
 
   private handleVisibilityChange = (): void => {
-
     if (document.hidden) {
-
       this.stopLoop();
-
     } else {
-
       this.resumeLoop();
     }
   };
@@ -477,18 +428,14 @@ export class EngineService implements OnDestroy {
   private calculateFPS(): void {
 
     this.fpsAccumulator += this.deltaTime;
-
     this.fpsFrames++;
 
     if (this.fpsAccumulator >= 1) {
-
       this.fps = Math.round(
         this.fpsFrames /
         this.fpsAccumulator
       );
-
       this.fpsAccumulator = 0;
-
       this.fpsFrames = 0;
     }
   }
@@ -555,17 +502,13 @@ export class EngineService implements OnDestroy {
 
       // Material
       if (child.material) {
-
         if (Array.isArray(child.material)) {
-
           child.material.forEach(
             (material: THREE.Material) => {
               material.dispose();
             }
           );
-
         } else {
-
           child.material.dispose();
         }
       }
@@ -574,11 +517,8 @@ export class EngineService implements OnDestroy {
       const material = child.material;
 
       if (material) {
-
         Object.keys(material).forEach(key => {
-
           const value = material[key];
-
           if (
             value &&
             value.isTexture
@@ -594,14 +534,11 @@ export class EngineService implements OnDestroy {
    * Limpia completamente la escena
    */
   public clearScene(): void {
-
     while (this.scene.children.length > 0) {
-
       const child =
         this.scene.children[0];
 
       this.disposeObject(child);
-
       this.scene.remove(child);
     }
   }
@@ -635,11 +572,8 @@ export class EngineService implements OnDestroy {
     );
 
     this.resizeObserver?.disconnect();
-
     this.clearUpdateLoop();
-
     this.clearScene();
-
     this.renderer?.dispose();
   }
 }

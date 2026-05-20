@@ -17,7 +17,7 @@ export class StarWarsCrawlManager {
     private timeline?: gsap.core.Timeline;
 
     // Constantes de diseño para la perspectiva de la cámara
-    private readonly START_Z = -180;
+    private readonly START_Z = 0;
     private readonly FADE_END_Z = -700;
 
     constructor(engineService: EngineService) {
@@ -94,7 +94,7 @@ export class StarWarsCrawlManager {
         this.timeline.set(this.container, { visible: true }, 0);
 
         // Animación: Despegue de opacidad inicial
-        this.timeline.to(material, { opacity: 1, duration: 0.18 }, 0);
+        this.timeline.to(material, { opacity: 1, duration: 0.05 }, 0);
 
         // Animación: Movimiento en el eje Y y alejamiento en Z (Efecto Star Wars)
         this.timeline.to(this.container.position, {
