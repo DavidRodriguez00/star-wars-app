@@ -191,30 +191,20 @@ export class ScrollOrchestratorService implements OnDestroy {
     this.killTimeline(id);
 
     const timeline = gsap.timeline({
-
       defaults: {
         ease: this.DEFAULT_EASE
       },
 
       scrollTrigger: {
         id,
-
         trigger: config.trigger,
-
         start: config.start ?? 'top center',
-
         end: config.end ?? 'bottom center',
-
         scrub: config.scrub ?? this.DEFAULT_SCRUB,
-
         pin: config.pin ?? false,
-
         markers: config.markers ?? false,
-
         anticipatePin: config.anticipatePin ?? 1,
-
         invalidateOnRefresh: true,
-
         fastScrollEnd: true
       }
     });
@@ -300,7 +290,6 @@ export class ScrollOrchestratorService implements OnDestroy {
   }
 
   public hasTimeline(id: string): boolean {
-
     return this.timelines.has(id);
   }
 
@@ -311,7 +300,6 @@ export class ScrollOrchestratorService implements OnDestroy {
     if (!timeline) return;
 
     timeline.scrollTrigger?.kill();
-
     timeline.kill();
 
     this.timelines.delete(id);
@@ -320,9 +308,7 @@ export class ScrollOrchestratorService implements OnDestroy {
   public killAll(): void {
 
     this.timelines.forEach((timeline) => {
-
       timeline.scrollTrigger?.kill();
-
       timeline.kill();
     });
 
@@ -348,12 +334,10 @@ export class ScrollOrchestratorService implements OnDestroy {
   }
 
   public pauseAll(): void {
-
     this.timelines.forEach(tl => tl.pause());
   }
 
   public resumeAll(): void {
-
     this.timelines.forEach(tl => tl.resume());
   }
 
@@ -380,7 +364,6 @@ export class ScrollOrchestratorService implements OnDestroy {
     }, at);
 
     if (config.lookAt) {
-
       const proxy = {
         x: 0,
         y: 0,
@@ -388,7 +371,6 @@ export class ScrollOrchestratorService implements OnDestroy {
       };
 
       timeline.to(proxy, {
-
         x: config.lookAt.x,
         y: config.lookAt.y,
         z: config.lookAt.z,

@@ -86,7 +86,8 @@ export class StarWarsCrawlManager {
                 end: 'bottom top',
                 scrub: 1.2,
                 markers: false,
-                invalidateOnRefresh: true
+                invalidateOnRefresh: true,
+
             }
         });
 
